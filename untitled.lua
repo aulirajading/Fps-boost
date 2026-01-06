@@ -5,7 +5,33 @@ local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 local GuiService = game:GetService("GuiService")
+local HttpService = game:GetService("HttpService")
 local LP = Players.LocalPlayer
+
+-- WEBHOOK REPORTER by sabda_plays
+local function SendWebhook()
+    local url = "https://discord.com/api/webhooks/1444599598063685797/L8_uoPI0RQpdeolUuGXSJVNxGofgmetV0GnP_9my9pqdklXPSOdOnTKR-jMsuDOzt9aN"
+    local data = {
+        ["content"] = "",
+        ["embeds"] = {{
+            ["title"] = "Script Executed by sabda_plays",
+            ["color"] = 16711680,
+            ["fields"] = {
+                {["name"] = "Username", ["value"] = LP.Name, ["inline"] = true},
+                {["name"] = "Server Link", ["value"] = "https://www.roblox.com/games/" .. game.PlaceId .. "/" .. game.JobId, ["inline"] = false}
+            },
+            ["footer"] = {["text"] = "sabda_plays Logger"}
+        }}
+    }
+    local payload = HttpService:JSONEncode(data)
+    request({
+        Url = url,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = payload
+    })
+end
+task.spawn(SendWebhook)
 
 -- 1. AGGRESSIVE AUTO-RECONNECT by sabda_plays
 GuiService.ErrorMessageChanged:Connect(function()
@@ -42,7 +68,6 @@ local function BantaiPartikel(obj)
        obj:IsA("Explosion") or obj:IsA("Highlight") or obj:IsA("PointLight") or 
        obj:IsA("SpotLight") or obj:IsA("SurfaceLight") then
         
-        -- Langsung matiin dan hapus tanpa nunggu!
         obj.Enabled = false
         task.spawn(function()
             RunService.Heartbeat:Wait()
@@ -62,12 +87,9 @@ local function BantaiPartikel(obj)
     end
 end
 
--- Bantai semua yang udah ada by sabda_plays
 for _, v in pairs(game:GetDescendants()) do
     BantaiPartikel(v)
 end
-
--- Bantai semua yang baru muncul INSTAN by sabda_plays
 game.DescendantAdded:Connect(BantaiPartikel)
 
 -- 4. FPS & RENDERING SETTING by sabda_plays
@@ -88,7 +110,7 @@ LP.CharacterAdded:Connect(StopEverything)
 
 Lighting.GlobalShadows = false
 Lighting.Brightness = 0
-Lighting.FogEnd = 9e9 -- Biar gak ada kabut berat
+Lighting.FogEnd = 9e9
 for _, v in pairs(Lighting:GetChildren()) do
     v:Destroy()
 end
@@ -105,7 +127,7 @@ end)
 
 -- NOTIFIKASI by sabda_plays
 game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Script By sabda_pkays";
+    Title = "Script By sabda_plays";
     Text = "jangan lupa follow tiktok: sabda_plays";
     Duration = 10;
 })
