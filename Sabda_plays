@@ -71,7 +71,7 @@ end
 game.DescendantAdded:Connect(BantaiPartikel)
 
 -- 4. FPS & RENDERING SETTING by sabda_plays
-setfpscap(60) 
+setfpscap(30) 
 settings().Rendering.QualityLevel = 1
 settings().Physics.PhysicsEnvironmentalThrottle = Enum.EnviromentalPhysicsThrottle.Always
 
@@ -107,5 +107,5 @@ end)
 game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Script By sabda_pkays";
     Text = "jangan lupa follow tiktok: sabda_plays";
-    Duration = 10;
+    Duration = 20;
 })
