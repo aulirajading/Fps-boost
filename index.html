@@ -1,75 +1,170 @@
--- -- SABDA_PLAYS UNIVERSAL FIX (TOTAL 3D ANNIHILATION + MODERN GUI) -- Script by sabda_plays 
-repeat task.wait() until game:IsLoaded() 
-local game = game 
-local Workspace = game:GetService("Workspace") 
-local Players = game:GetService("Players") 
-local Lighting = game:GetService("Lighting") 
-local RunService = game:GetService("RunService") 
-local HttpService = game:GetService("HttpService") 
-local LP = Players.LocalPlayer 
-local Terrain = Workspace.Terrain 
-local CoreGui = game:GetService("CoreGui") 
-local HidePlayersEnabled = false 
+-- SABDA_PLAYS UNIVERSAL FIX (TOTAL 3D ANNIHILATION + MODERN GUI)
+-- Script by sabda_plays
 
--- 1. WEBHOOK LOGGER by sabda_plays 
-local function SendWebhook() 
-    local url = "https://discord.com/api/webhooks/1444599598063685797/L8_uoPI0RQpdeolUuGXSJVNxGofgmetV0GnP_9my9pqdklXPSOdOnTKR-jMsuDOzt9aN" 
-    local serverLink = "https://www.roblox.com/games/" .. game.PlaceId .. "?jobId=" .. game.JobId 
-    local exec = (identifyexecutor and identifyexecutor()) or "Unknown/Mobile" 
-    local data = { 
-        ["embeds"] = {{ 
-            ["title"] = "**sabda_plays ANNIHILATION SCAN**", 
-            ["color"] = 0x000000, 
-            ["fields"] = { 
-                {["name"] = "User", ["value"] = "```" .. LP.Name .. "```", ["inline"] = true}, 
-                {["name"] = "Executor", ["value"] = "```" .. exec .. "```", ["inline"] = true}, 
-                {["name"] = "Status", ["value"] = "3D Deleted", ["inline"] = true} 
-            }, 
-            ["footer"] = {["text"] = "sabda_plays Universal"} 
-        }} 
-    } 
-    pcall(function() 
-        local payload = HttpService:JSONEncode(data) 
-        local requestFunc = (syn and syn.request) or (http and http.request) or http_request or request 
-        if requestFunc then 
-            requestFunc({Url = url, Method = "POST", Headers = {["Content-Type"] = "application/json"}, Body = payload}) 
-        end 
-    end) 
-end 
-task.spawn(SendWebhook) 
+repeat task.wait() until game:IsLoaded()
 
--- 2. MODERN GUI SYSTEM WITH RGB by sabda_plays 
-local function CreateModernUI() 
-    if CoreGui:FindFirstChild("sabda_plays_modern") then CoreGui.sabda_plays_modern:Destroy() end 
-    local sg = Instance.new("ScreenGui") 
-    sg.Name = "sabda_plays_modern" 
-    sg.Parent = (gethui and gethui()) or CoreGui or LP:WaitForChild("PlayerGui") 
-    sg.ResetOnSpawn = false 
-    local MainFrame = Instance.new("Frame", sg) 
-    MainFrame.Name = "MainFrame" 
-    MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15) 
-    MainFrame.Position = UDim2.new(0.1, 0, 0.2, 0) 
-    MainFrame.Size = UDim2.new(0, 220, 0, 190) 
-    MainFrame.BorderSizePixel = 0 
-    MainFrame.Active = true 
-    MainFrame.Draggable = true 
-    Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 10) 
+local game = game
+local Workspace = game:GetService("Workspace")
+local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
+local RunService = game:GetService("RunService")
+local LP = Players.LocalPlayer
+local Terrain = Workspace.Terrain
+local CoreGui = game:GetService("CoreGui")
 
-    local UIStroke = Instance.new("UIStroke", MainFrame) 
-    UIStroke.Thickness = 2 
-    UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border 
-    task.spawn(function() 
-        while true do 
-            local hue = tick() % 5 / 5 
-            UIStroke.Color = Color3.fromHSV(hue, 1, 1) 
-            task.wait() 
-        end 
-    end) 
+local HidePlayersEnabled = false
 
-    local Header = Instance.new("TextLabel", MainFrame) 
-    Header.BackgroundTransparency = 1 
-    Header.Position = UDim2.new(0, 15, 0, 10) 
-    Header.Size = UDim2.new(1, -50, 0, 25) 
+-- MODERN GUI SYSTEM WITH RGB by sabda_plays
+local function CreateModernUI()
+
+    if CoreGui:FindFirstChild("sabda_plays_modern") then
+        CoreGui.sabda_plays_modern:Destroy()
+    end
+
+    local sg = Instance.new("ScreenGui")
+    sg.Name = "sabda_plays_modern"
+    sg.Parent = (gethui and gethui()) or CoreGui or LP:WaitForChild("PlayerGui")
+    sg.ResetOnSpawn = false
+
+    local MainFrame = Instance.new("Frame", sg)
+    MainFrame.BackgroundColor3 = Color3.fromRGB(15,15,15)
+    MainFrame.Position = UDim2.new(0.1,0,0.2,0)
+    MainFrame.Size = UDim2.new(0,220,0,190)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Active = true
+    MainFrame.Draggable = true
+
+    Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0,10)
+
+    local UIStroke = Instance.new("UIStroke", MainFrame)
+    UIStroke.Thickness = 2
+
+    task.spawn(function()
+        while true do
+            local hue = tick()%5/5
+            UIStroke.Color = Color3.fromHSV(hue,1,1)
+            task.wait()
+        end
+    end)
+
+    local Header = Instance.new("TextLabel", MainFrame)
+    Header.BackgroundTransparency = 1
+    Header.Position = UDim2.new(0,15,0,10)
+    Header.Size = UDim2.new(1,-50,0,25)
+    Header.Font = Enum.Font.GothamBold
+    Header.Text = "TIKTOK: sabda_plays"
+    Header.TextColor3 = Color3.fromRGB(255,255,255)
+    Header.TextSize = 16
+    Header.TextXAlignment = Enum.TextXAlignment.Left
+
+    local FPSInput = Instance.new("TextBox", MainFrame)
+    FPSInput.BackgroundColor3 = Color3.fromRGB(35,35,35)
+    FPSInput.Position = UDim2.new(0,15,0,60)
+    FPSInput.Size = UDim2.new(0,120,0,30)
+    FPSInput.Font = Enum.Font.Gotham
+    FPSInput.Text = "60"
+    FPSInput.TextColor3 = Color3.fromRGB(255,255,255)
+    FPSInput.TextSize = 14
+
+    Instance.new("UICorner", FPSInput)
+
+    local SetFPSBtn = Instance.new("TextButton", MainFrame)
+    SetFPSBtn.BackgroundColor3 = Color3.fromRGB(200,0,0)
+    SetFPSBtn.Position = UDim2.new(1,-75,0,60)
+    SetFPSBtn.Size = UDim2.new(0,60,0,30)
+    SetFPSBtn.Font = Enum.Font.GothamBold
+    SetFPSBtn.Text = "SET"
+    SetFPSBtn.TextColor3 = Color3.fromRGB(255,255,255)
+
+    Instance.new("UICorner", SetFPSBtn)
+
+    SetFPSBtn.MouseButton1Click:Connect(function()
+        local num = tonumber(FPSInput.Text)
+        if num then
+            setfpscap(num)
+        end
+    end)
+
+    local HideBtn = Instance.new("TextButton", MainFrame)
+    HideBtn.BackgroundColor3 = Color3.fromRGB(40,40,40)
+    HideBtn.Position = UDim2.new(0,15,0,100)
+    HideBtn.Size = UDim2.new(1,-30,0,35)
+    HideBtn.Font = Enum.Font.GothamBold
+    HideBtn.Text = "HIDE OTHERS: OFF"
+    HideBtn.TextColor3 = Color3.fromRGB(200,200,200)
+
+    Instance.new("UICorner", HideBtn)
+
+    HideBtn.MouseButton1Click:Connect(function()
+        HidePlayersEnabled = not HidePlayersEnabled
+
+        if HidePlayersEnabled then
+            HideBtn.Text = "HIDE OTHERS: ON"
+            HideBtn.TextColor3 = Color3.fromRGB(0,255,100)
+        else
+            HideBtn.Text = "HIDE OTHERS: OFF"
+            HideBtn.TextColor3 = Color3.fromRGB(200,200,200)
+        end
+    end)
+
+end
+
+task.spawn(CreateModernUI)
+
+-- UNIVERSAL 3D DESTROYER
+local function Musnahkan(v)
+
+    if v:FindFirstAncestorWhichIsA("PlayerGui") then
+        return
+    end
+
+    pcall(function()
+
+        if v:IsA("MeshPart") or
+        v:IsA("UnionOperation") or
+        v:IsA("SpecialMesh") or
+        v:IsA("ParticleEmitter") or
+        v:IsA("Trail") or
+        v:IsA("Beam") or
+        v:IsA("Sparkles") or
+        v:IsA("Fire") or
+        v:IsA("Smoke") or
+        v:IsA("Explosion") then
+
+            v:Destroy()
+
+        elseif v:IsA("BasePart") and not v:IsA("Terrain") then
+
+            v.Material = Enum.Material.SmoothPlastic
+            v.CastShadow = false
+            v.Color = Color3.fromRGB(100,100,100)
+
+        end
+
+    end)
+
+end
+
+Workspace.DescendantAdded:Connect(Musnahkan)
+
+task.spawn(function()
+
+    settings().Rendering.QualityLevel = 1
+    Terrain.WaterWaveSize = 0
+
+    for _,v in pairs(Lighting:GetChildren()) do
+        v:Destroy()
+    end
+
+    Lighting.GlobalShadows = false
+
+    for _,obj in pairs(Workspace:GetDescendants()) do
+        Musnahkan(obj)
+    end
+
+end)
+
+print("sabda_plays: RGB GUI & 3D ANNIHILATION LOADED.")    Header.Size = UDim2.new(1, -50, 0, 25) 
     Header.Font = Enum.Font.GothamBold 
     Header.Text = "TIKTOK: sabda_plays" 
     Header.TextColor3 = Color3.fromRGB(255, 255, 255) 
